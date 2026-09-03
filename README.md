@@ -9,6 +9,7 @@ learn front-end web development.
 
 - **About** — bio, photo, interests, and skills
 - **Projects** — showcases of work and research, pulled from real coursework/internship experience
+- **Interests** — life outside the classroom, with a clickable photo carousel
 - **Contact** — email, phone, and GitHub
 
 ## Features
@@ -17,6 +18,7 @@ learn front-end web development.
 - Dark mode toggle with saved preference (`localStorage`)
 - Mobile hamburger navigation
 - Scroll-reveal animations via `IntersectionObserver`
+- Click-to-advance photo carousel in the Interests section
 
 ## Project structure
 
@@ -50,5 +52,7 @@ branch root once Pages is enabled:
 ## To personalize
 
 - Add a real photo at `assets/images/profile.jpg` (falls back to an initials avatar until then).
+- Add `assets/images/badminton1.jpeg`, `badminton2.jpeg`, and `badminton3.jpeg` for the Interests
+  carousel (falls back to a placeholder until then).
 - Add your LinkedIn (or other links) in the Contact section of `index.html`.
 - Swap in new project cards in `index.html` as you build things this semester.

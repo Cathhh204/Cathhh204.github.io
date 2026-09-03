@@ -47,5 +47,27 @@ const observer = new IntersectionObserver(
 );
 revealEls.forEach((el) => observer.observe(el));
 
+// ---------- Photo carousels ----------
+document.querySelectorAll(".carousel").forEach((carousel) => {
+  const track = carousel.querySelector(".carousel-track");
+  const slides = carousel.querySelectorAll(".carousel-track img");
+  const dots = carousel.querySelectorAll(".dot");
+  let index = 0;
+
+  const goToNext = () => {
+    index = (index + 1) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+  };
+
+  carousel.addEventListener("click", goToNext);
+  carousel.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      goToNext();
+    }
+  });
+});
+
 // ---------- Footer year ----------
 document.getElementById("year").textContent = new Date().getFullYear();

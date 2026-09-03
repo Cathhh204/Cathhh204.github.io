@@ -240,6 +240,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- Projects ---------- */
+.group-heading {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 56px 0 20px;
+}
+
+.section-subtitle + .group-heading {
+  margin-top: 0;
+}
+
 .project-list {
   display: flex;
   flex-direction: column;
@@ -329,6 +340,133 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
 }
 
+/* ---------- Interests / photo carousel ---------- */
+.interest-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.interest-text {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.carousel {
+  position: relative;
+  flex: 0 0 300px;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s ease;
+}
+
+.carousel-track img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+.carousel-next svg { width: 18px; height: 18px; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: background 0.2s ease;
+}
+
+.dot.active { background: #fff; }
+
+/* ---------- Achievements ---------- */
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.achievement-card {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px 26px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.achievement-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.achievement-index {
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  font-family: var(--font-heading);
+  font-size: 3.4rem;
+  font-weight: 700;
+  color: var(--accent-soft);
+  line-height: 1;
+  z-index: 0;
+  user-select: none;
+}
+
+.achievement-card .project-tag,
+.achievement-card h3,
+.achievement-card p {
+  position: relative;
+  z-index: 1;
+}
+
+.achievement-card .project-tag { align-self: flex-start; }
+
+.achievement-card h3 { font-size: 1.2rem; padding-right: 30px; }
+
+.achievement-card p { color: var(--text-muted); font-size: 0.9rem; }
+
 /* ---------- Contact ---------- */
 .contact-links {
   display: flex;
@@ -368,6 +506,19 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--border);
 }
 
+.footer-credit {
+  margin-top: 6px;
+  font-size: 0.78rem;
+}
+
+.footer-credit a {
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer-credit a:hover { color: var(--accent); }
+
 /* ---------- Scroll reveal ---------- */
 .reveal {
   opacity: 0;
@@ -385,6 +536,7 @@ a { color: inherit; text-decoration: none; }
   .chips { justify-content: center; }
   .bio { max-width: none; }
   .project-item { grid-template-columns: 1fr; gap: 12px; }
+  .achievement-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
@@ -408,4 +560,5 @@ a { color: inherit; text-decoration: none; }
   .hero-text h1 { font-size: 2.1rem; }
   .project-item { padding: 40px 0; }
   .project-body h3 { font-size: 1.35rem; }
+  .achievement-grid { grid-template-columns: 1fr; }
 }
