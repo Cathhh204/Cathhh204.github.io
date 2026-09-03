@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qi Chen | Portfolio</title>
+  <meta name="description" content="Qi Chen — CS/ECE student at Carnegie Mellon University. Software developer, researcher, and educator." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍💻</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+</head>
+<body>
+
+  <header class="navbar" id="navbar">
+    <div class="nav-inner container">
+      <a href="#" class="logo">QC<span class="logo-dot">.</span></a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+        </button>
+        <button id="navToggle" class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ABOUT -->
+    <section id="about" class="section hero container">
+      <div class="hero-photo reveal">
+        <img id="profileImg" src="assets/images/profile.jpg" alt="Portrait of Qi Chen" onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';" />
+        <div id="avatarFallback" class="avatar-fallback">QC</div>
+      </div>
+
+      <div class="hero-text reveal">
+        <p class="eyebrow">Hi, I'm</p>
+        <h1>Catherine Chen</h1>
+        <p class="subtitle">also known as <strong>Cath</strong> — ECE &amp; CS student at Carnegie Mellon University</p>
+
+        <p class="bio">
+          I'm a sophomore student at Carnegie Mellon University pursuing Electrical &amp; Computer Engineering and Computer
+          Science. I've worked as a software and hardware
+          developer building real-world platforms — from a government document-approval system that
+          cut turnaround time by 36%, to a co-patented backlight algorithm for large displays — and
+          I've published research spanning machine learning for environmental science and
+          bioinformatics for diabetes. I love using code to solve tangible problems, and I enjoy
+          teaching what I learn: I founded a math &amp; computing club that reached 2,000+ students.
+        </p>
+
+        <div class="chip-group">
+          <h3 class="chip-heading">Interests</h3>
+          <div class="chips">
+            <span class="chip">Machine Learning</span>
+            <span class="chip">Full-Stack Development</span>
+            <span class="chip">Bioinformatics</span>
+            <span class="chip">Embedded Systems</span>
+            <span class="chip">Robotics</span>
+            <span class="chip">STEM Education</span>
+          </div>
+        </div>
+
+        <div class="chip-group">
+          <h3 class="chip-heading">Skills</h3>
+          <div class="chips">
+            <span class="chip chip-accent">C++11/14</span>
+            <span class="chip chip-accent">C</span>
+            <span class="chip chip-accent">Standard ML</span>
+            <span class="chip chip-accent">Python</span>
+            <span class="chip chip-accent">Java</span>
+            <span class="chip chip-accent">HTML/CSS</span>
+            <span class="chip chip-accent">Vue 3.0</span>
+            <span class="chip chip-accent">Element Plus</span>
+            <span class="chip chip-accent">MySQL</span>
+          </div>
+        </div>
+
+        <a href="#contact" class="btn btn-primary">Get in touch</a>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section container">
+      <h2 class="section-title reveal">Projects</h2>
+      <p class="section-subtitle reveal">A mix of professional work, published research, and things I've built along the way.</p>
+
+      <div class="project-list">
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Software Developer</span>
+            <span class="project-period">Jun 2025 – Aug 2025</span>
+          </div>
+          <div class="project-body">
+            <h3>Government Document Circulation Platform</h3>
+            <p>Full-stack web platform, built at Shenzhen Pinghu Laboratory, letting enterprises
+              request official documents directly from government authorities through a 6-stage
+              approval workflow spanning applicant submission, supervisor review, and case-handler
+              processing.</p>
+            <ul class="card-highlights">
+              <li>Streamlined government–enterprise communication with real-time request tracking</li>
+              <li>Cut approval turnaround time by 36%</li>
+              <li>Recognized by senior leadership for its practical impact</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">Web</span><span class="tag">Workflow Systems</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Software &amp; Hardware Developer</span>
+            <span class="project-period">Sep 2023 – Aug 2024</span>
+          </div>
+          <div class="project-body">
+            <h3>Adaptive Partition Backlight Algorithm</h3>
+            <p>At Bohe Digital Technology, contributed to an algorithmically optimized partition
+              backlight that enhances display contrast on whiteboards and large outdoor displays —
+              co-holder of the resulting patent.</p>
+            <ul class="card-highlights">
+              <li>Built per-frame brightness detection using an external light sensor</li>
+              <li>Designed mapping tables for multiple screen specifications and configurations</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">C++</span><span class="tag">Embedded</span><span class="tag">Patent</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Published Research</span>
+            <span class="project-period">Mar 2024 – Aug 2024</span>
+          </div>
+          <div class="project-body">
+            <h3>ML Prediction of Pathogen Spread on Microplastics</h3>
+            <p>Research with the Pioneer Data Science program (advised by Prof. Sanjay Ranka, University
+              of Florida), predicting Vibrio spp. abundance on microplastics from 483 collected data
+              points.</p>
+            <ul class="card-highlights">
+              <li>Built an artificial neural network reaching 87% accuracy</li>
+              <li>Published in CPCI</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">Python</span><span class="tag">Neural Networks</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Full-Stack Developer</span>
+            <span class="project-period">Jan 2023 – May 2024</span>
+          </div>
+          <div class="project-body">
+            <h3>Abilitopia Team Matching Platform</h3>
+            <p>A website using a computational matching algorithm to pair students with teammates for
+              class projects and competitions based on skill level, grades, working dynamics, and
+              MBTI profile.</p>
+            <ul class="card-highlights">
+              <li>Generated intelligent, like-minded team matches</li>
+              <li>Included online learning resources for remote areas</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">Web</span><span class="tag">Algorithms</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Published Research</span>
+            <span class="project-period">Feb 2023 – Aug 2024</span>
+          </div>
+          <div class="project-body">
+            <h3>Bioinformatics of Glucose Markers in Diabetes</h3>
+            <p>Statistical analysis identifying associations between glucose biomarkers and
+              disease-related functions, under the guidance of Dr. Zhang Xingjian (Yale University).</p>
+            <ul class="card-highlights">
+              <li>Regression, t-tests, and ANOVA across diabetes datasets</li>
+              <li>Published in the International Journal of High School Research</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">Data Analysis</span><span class="tag">Statistics</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Founder</span>
+            <span class="project-period">Feb 2023 – Aug 2024</span>
+          </div>
+          <div class="project-body">
+            <h3>SCIE Mathematics for Everyone Club</h3>
+            <p>Founded and led a club teaching A-level coursework and computational algorithms,
+              designing two Arduino devices — one to assist people with dyslexia and one to monitor
+              study environments.</p>
+            <ul class="card-highlights">
+              <li>Showcased to 2,000+ teachers and students across campus</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">Arduino</span><span class="tag">Teaching</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item reveal">
+          <div class="project-meta">
+            <span class="project-tag">Independent Research</span>
+            <span class="project-period">May 2026 – Aug 2026</span>
+          </div>
+          <div class="project-body">
+            <h3>Generative Models &amp; Robot Learning</h3>
+            <p>Independent research of diffusion models, vision-language models, and
+              vision-language-action models, combining paper reading with model reproduction and
+              hands-on robot learning experiments.</p>
+            <ul class="card-highlights">
+              <li>Studied and reproduced diffusion-based models, including DDPM, DDIM, U-Net, and Diffusion Policy</li>
+              <li>Explored VLM/VLA architectures and experimented with ACT policies and robotic manipulation using LeRobot</li>
+            </ul>
+            <div class="card-footer-tags">
+              <span class="tag">Diffusion Models</span><span class="tag">VLA</span><span class="tag">Robot Learning</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section container">
+      <h2 class="section-title reveal">Contact</h2>
+      <p class="section-subtitle reveal">Want to collaborate, chat about research, or just say hi? Reach out below.</p>
+
+      <div class="contact-links reveal">
+        <a class="contact-link" href="mailto:cchen7@andrew.cmu.edu">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          cchen7@andrew.cmu.edu
+        </a>
+        <a class="contact-link" href="tel:+14129992372">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +1 (412) 999-2372
+        </a>
+        <a class="contact-link" href="https://github.com/Cathhh204" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3Z"/></svg>
+          github.com/Cathhh204
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Qi Chen. Built with HTML, CSS &amp; JavaScript.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
