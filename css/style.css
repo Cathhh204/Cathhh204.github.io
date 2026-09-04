@@ -1,3 +1,10 @@
+/*
+  AI usage: written with Claude Code (CMU 15-113). See PROMPT_LOG.md for the full session.
+  Notable AI-assisted debugging: the responsive rules below fix a real CSS Grid/Flexbox bug Claude
+  found — a grid/flex item's "automatic minimum size" can force layout wider than its container even
+  when every rule looks constrained, which was causing horizontal overflow on narrow screens.
+*/
+
 /* ---------- Design tokens ---------- */
 :root {
   --bg: #fafaf9;
@@ -452,6 +459,33 @@ a { color: inherit; text-decoration: none; }
   padding: 4px 12px;
   border-radius: 999px;
 }
+
+.project-screenshot-wrap {
+  flex: 0 1 260px;
+  max-width: 100%;
+  align-self: flex-start;
+}
+
+.project-screenshot {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.project-link:hover { text-decoration: underline; }
+
+.project-link .icon { width: 15px; height: 15px; }
 
 /* ---------- Interests / photo carousel ---------- */
 .interest-body {

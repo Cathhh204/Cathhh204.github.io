@@ -1,3 +1,7 @@
+// AI usage: written with Claude Code (CMU 15-113). See PROMPT_LOG.md for the full session —
+// every feature below (dark mode, mobile nav, scroll reveal, carousels, the course marquee) was
+// built by describing the desired behavior and iterating on it, not copy-pasted from a tutorial.
+
 // ---------- Dark mode toggle ----------
 const root = document.documentElement;
 const themeToggle = document.getElementById("themeToggle");
