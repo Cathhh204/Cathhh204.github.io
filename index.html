@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qi Chen | Portfolio</title>
   <meta name="description" content="Qi Chen — CS/ECE student at Carnegie Mellon University. Software developer, researcher, and educator." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍💻</text></svg>" />
+  <link rel="icon" type="image/png" href="assets/images/icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -21,6 +21,7 @@
       <nav class="nav-links" id="navLinks">
         <a href="#about" class="nav-link">About</a>
         <a href="#projects" class="nav-link">Projects</a>
+        <a href="#coursework" class="nav-link">Coursework</a>
         <a href="#interests" class="nav-link">Interests</a>
         <a href="#achievements" class="nav-link">Achievements</a>
         <a href="#contact" class="nav-link">Contact</a>
@@ -52,7 +53,7 @@
         <p class="subtitle">also known as <strong>Qi Chen</strong> — ECE &amp; CS student at Carnegie Mellon University</p>
 
         <p class="bio">
-          I'm a sophomore student at Carnegie Mellon University pursuing Electrical &amp; Computer Engineering and Computer
+          I'm a second year student at Carnegie Mellon University pursuing Electrical &amp; Computer Engineering and Computer
           Science. I've worked as a software and hardware
           developer building real-world platforms — from a government document-approval system that
           cut turnaround time by 36%, to a co-patented backlight algorithm for large displays — and
@@ -79,8 +80,9 @@
             <span class="chip chip-accent">C++11/14</span>
             <span class="chip chip-accent">C</span>
             <span class="chip chip-accent">Standard ML</span>
-            <span class="chip chip-accent">Python</span>
+            <span class="chip chip-accent">Python3</span>
             <span class="chip chip-accent">Java</span>
+            <span class="chip chip-accent">SystemVerilog</span>
             <span class="chip chip-accent">HTML/CSS</span>
             <span class="chip chip-accent">Vue 3.0</span>
             <span class="chip chip-accent">Element Plus</span>
@@ -88,7 +90,13 @@
           </div>
         </div>
 
-        <a href="#contact" class="btn btn-primary">Get in touch</a>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Get in touch</a>
+          <a href="assets/resume.pdf" class="btn btn-secondary" download="Catherine Chen Resume.pdf">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+            Download Resume
+          </a>
+        </div>
       </div>
     </section>
 
@@ -253,10 +261,52 @@
       </div>
     </section>
 
+    <!-- COURSEWORK -->
+    <section id="coursework" class="section container">
+      <h2 class="section-title reveal">Coursework</h2>
+      <p class="section-subtitle reveal">Classes I've taken at Carnegie Mellon.</p>
+
+      <div class="course-marquee-wrap reveal">
+        <button type="button" class="marquee-nav marquee-prev" id="marqueePrev" aria-label="Scroll courses left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>
+        </button>
+        <div class="course-marquee" id="courseMarquee">
+        <div class="course-track" id="courseTrack">
+          <div class="course-block"><span class="course-code">07-280</span><span class="course-name">Artificial Intelligence and Machine Learning</span></div>
+          <div class="course-block"><span class="course-code">16-385</span><span class="course-name">Computer Vision</span></div>
+          <div class="course-block"><span class="course-code">18-240</span><span class="course-name">Structure and Design of Digital Systems</span></div>
+          <div class="course-block"><span class="course-code">15-213</span><span class="course-name">Introduction to Computer Systems</span></div>
+          <div class="course-block"><span class="course-code">15-150</span><span class="course-name">Principles of Functional Programming</span></div>
+          <div class="course-block"><span class="course-code">15-122</span><span class="course-name">Principles of Imperative Computation</span></div>
+          <div class="course-block"><span class="course-code">18-100</span><span class="course-name">Introduction to Electrical and Computer Engineering</span></div>
+          <div class="course-block"><span class="course-code">21-127</span><span class="course-name">Concepts of Mathematics</span></div>
+          <div class="course-block"><span class="course-code">21-241</span><span class="course-name">Matrices and Linear Transformations</span></div>
+          <div class="course-block"><span class="course-code">21-259</span><span class="course-name">Calculus in Three Dimensions</span></div>
+          <div class="course-block"><span class="course-code">36-225</span><span class="course-name">Introduction to Probability Theory</span></div>
+
+          <div class="course-block" aria-hidden="true"><span class="course-code">07-280</span><span class="course-name">Artificial Intelligence and Machine Learning</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">16-385</span><span class="course-name">Computer Vision</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">18-240</span><span class="course-name">Structure and Design of Digital Systems</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">15-213</span><span class="course-name">Introduction to Computer Systems</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">15-150</span><span class="course-name">Principles of Functional Programming</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">15-122</span><span class="course-name">Principles of Imperative Computation</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">18-100</span><span class="course-name">Introduction to Electrical and Computer Engineering</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">21-127</span><span class="course-name">Concepts of Mathematics</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">21-241</span><span class="course-name">Matrices and Linear Transformations</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">21-259</span><span class="course-name">Calculus in Three Dimensions</span></div>
+          <div class="course-block" aria-hidden="true"><span class="course-code">36-225</span><span class="course-name">Introduction to Probability Theory</span></div>
+        </div>
+        </div>
+        <button type="button" class="marquee-nav marquee-next" id="marqueeNext" aria-label="Scroll courses right">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+    </section>
+
     <!-- INTERESTS -->
     <section id="interests" class="section container">
       <h2 class="section-title reveal">Interests</h2>
-      <p class="section-subtitle reveal">Life outside the classroom and the lab.</p>
+      <p class="section-subtitle reveal">Beyond academics — athletics, competition, and leadership.</p>
 
       <div class="project-list">
 
@@ -370,13 +420,6 @@
           <span class="project-tag">Academic Decathlon</span>
           <h3>1st Prize Overall Team Award, 2nd Prize Super Quiz</h3>
           <p>U.S. Academic Decathlon Nationals</p>
-        </article>
-
-        <article class="achievement-card reveal">
-          <span class="achievement-index">07</span>
-          <span class="project-tag">Physics</span>
-          <h3>Global Bronze II</h3>
-          <p>BPhO Round I</p>
         </article>
 
       </div>

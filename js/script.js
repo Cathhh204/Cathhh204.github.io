@@ -69,5 +69,56 @@ document.querySelectorAll(".carousel").forEach((carousel) => {
   });
 });
 
+// ---------- Course marquee ----------
+const courseMarquee = document.getElementById("courseMarquee");
+const courseTrack = document.getElementById("courseTrack");
+const marqueePrev = document.getElementById("marqueePrev");
+const marqueeNext = document.getElementById("marqueeNext");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (courseMarquee && courseTrack) {
+  const BASE_SPEED = 0.35; // idle drift, px per frame (skipped if reduced motion)
+  const BOOST_SCALE = 0.6; // how strongly pointer movement adds speed
+  const MAX_BOOST = 8; // px per frame cap from pointer movement
+  const BOOST_DECAY = 0.92; // decay per frame back to idle speed
+  const CLICK_IMPULSE = 18; // px per frame kick from prev/next buttons
+
+  let setWidth = 0;
+  let offset = 0;
+  let boost = 0;
+  let lastX = null;
+
+  const measure = () => {
+    setWidth = courseTrack.scrollWidth / 2;
+  };
+  measure();
+  window.addEventListener("resize", measure);
+
+  courseMarquee.addEventListener("pointermove", (e) => {
+    if (lastX !== null) {
+      const dx = e.clientX - lastX;
+      boost = Math.max(Math.min(boost + dx * BOOST_SCALE, MAX_BOOST), -MAX_BOOST);
+    }
+    lastX = e.clientX;
+  });
+  courseMarquee.addEventListener("pointerdown", (e) => { lastX = e.clientX; });
+  courseMarquee.addEventListener("pointerleave", () => { lastX = null; });
+
+  marqueeNext?.addEventListener("click", () => { boost += CLICK_IMPULSE; });
+  marqueePrev?.addEventListener("click", () => { boost -= CLICK_IMPULSE; });
+
+  const tick = () => {
+    offset += (reduceMotion ? 0 : BASE_SPEED) + boost;
+    boost *= BOOST_DECAY;
+    if (setWidth > 0) {
+      let wrapped = offset % setWidth;
+      if (wrapped < 0) wrapped += setWidth;
+      courseTrack.style.transform = `translateX(${wrapped - setWidth}px)`;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
 // ---------- Footer year ----------
 document.getElementById("year").textContent = new Date().getFullYear();
