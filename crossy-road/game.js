@@ -372,8 +372,8 @@
     if (player.animating) return;
 
     let dx = 0, dy = 0;
-    if (e.code === 'ArrowUp'    || e.code === 'KeyW') dy =  1;
-    if (e.code === 'ArrowDown'  || e.code === 'KeyS') dy = -1;
+    if (e.code === 'ArrowUp'    || e.code === 'KeyW') dy = -1;
+    if (e.code === 'ArrowDown'  || e.code === 'KeyS') dy =  1;
     if (e.code === 'ArrowRight' || e.code === 'KeyD') dx =  1;
     if (e.code === 'ArrowLeft'  || e.code === 'KeyA') dx = -1;
     if (dx === 0 && dy === 0) return;
