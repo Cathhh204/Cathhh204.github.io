@@ -677,6 +677,10 @@
     }
 
     // ── Game over overlay ─────────────────────────
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font      = '12px monospace';
+    ctx.fillText('Created with AI', 16, canvas.height - 16);
+    
     if (state === 'dead') {
       ctx.fillStyle = 'rgba(0,0,0,0.68)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
