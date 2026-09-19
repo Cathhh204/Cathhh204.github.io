@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokédex Arena</title>
+  <meta name="description" content="Look up any Pokémon, simulate a type-based battle with a live stat chart, or play a guess-the-Pokémon game — all powered by the free, keyless PokeAPI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="back-link" href="../index.html#projects">&larr; Back to Portfolio</a>
+    <h1 class="brand">Pokédex Arena</h1>
+    <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+    </button>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="App mode">
+    <button class="tab-btn active" data-mode="lookup" role="tab" aria-selected="true" id="tab-lookup">Pokédex Lookup</button>
+    <button class="tab-btn" data-mode="battle" role="tab" aria-selected="false" id="tab-battle">Battle Arena</button>
+    <button class="tab-btn" data-mode="guess" role="tab" aria-selected="false" id="tab-guess">Guess the Pokémon</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===================== LOOKUP MODE ===================== -->
+    <section id="mode-lookup" class="mode-panel" role="tabpanel" aria-labelledby="tab-lookup">
+      <p class="mode-intro">Search any Pokémon by name or National Dex number to see its types, stats, and abilities.</p>
+
+      <form id="lookupForm" class="search-row">
+        <input type="text" id="lookupInput" placeholder="e.g. pikachu, 6, charizard" autocomplete="off" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="button" id="lookupRandomBtn" class="btn btn-secondary">Random</button>
+      </form>
+      <p id="lookupStatus" class="status-msg" role="status" aria-live="polite"></p>
+
+      <article id="lookupResult" class="poke-card" hidden>
+        <div class="poke-card-top">
+          <img id="lookupSprite" class="poke-sprite" alt="" />
+          <div>
+            <h2 id="lookupName"></h2>
+            <p id="lookupIdGen" class="muted"></p>
+            <div id="lookupTypes" class="type-badges"></div>
+          </div>
+        </div>
+        <div class="poke-card-body">
+          <div class="poke-meta-grid">
+            <div><span class="meta-label">Height</span><span id="lookupHeight"></span></div>
+            <div><span class="meta-label">Weight</span><span id="lookupWeight"></span></div>
+            <div><span class="meta-label">Abilities</span><span id="lookupAbilities"></span></div>
+          </div>
+          <h3 class="subheading">Base Stats <span class="muted">(scale: 0&ndash;255)</span></h3>
+          <ul id="lookupStats" class="stat-bars"></ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== BATTLE MODE ===================== -->
+    <section id="mode-battle" class="mode-panel" hidden role="tabpanel" aria-labelledby="tab-battle">
+      <p class="mode-intro">Enter two Pokémon to compare their base stats and simulate a type matchup.</p>
+
+      <form id="battleForm" class="battle-form">
+        <input type="text" id="battleInputA" placeholder="Pokémon A (e.g. charizard)" autocomplete="off" />
+        <span class="vs">VS</span>
+        <input type="text" id="battleInputB" placeholder="Pokémon B (e.g. blastoise)" autocomplete="off" />
+        <button type="submit" class="btn btn-primary">Battle!</button>
+      </form>
+      <p id="battleStatus" class="status-msg" role="status" aria-live="polite"></p>
+
+      <div id="battleResult" class="battle-result" hidden>
+        <div class="battle-sides">
+          <div class="battle-side" id="battleSideA"></div>
+          <div class="battle-side" id="battleSideB"></div>
+        </div>
+
+        <h3 class="subheading">Type Matchup</h3>
+        <div class="matchup-analysis" id="matchupAnalysis"></div>
+
+        <h3 class="subheading">Base Stat Comparison</h3>
+        <div id="battleChart" class="chart-wrap"></div>
+
+        <div class="winner-banner" id="winnerBanner"></div>
+      </div>
+    </section>
+
+    <!-- ===================== GUESS MODE ===================== -->
+    <section id="mode-guess" class="mode-panel" hidden role="tabpanel" aria-labelledby="tab-guess">
+      <p class="mode-intro">Guess the Pokémon from its silhouette. Free hint included &mdash; extra hints cost points.</p>
+
+      <div class="guess-scoreboard">
+        <span>Score: <strong id="guessScore">0</strong></span>
+        <span>Round: <strong id="guessRound">0</strong></span>
+        <span>Streak: <strong id="guessStreak">0</strong></span>
+        <button type="button" id="guessNewGameBtn" class="btn btn-secondary">New Game</button>
+      </div>
+
+      <div class="guess-stage">
+        <div class="silhouette-wrap">
+          <img id="guessSprite" class="guess-sprite silhouette" alt="Mystery Pokémon" />
+        </div>
+
+        <div class="guess-panel">
+          <ul id="guessHints" class="hints-list"></ul>
+          <button type="button" id="guessHintBtn" class="btn btn-secondary">Reveal a hint</button>
+
+          <form id="guessForm" class="search-row">
+            <input type="text" id="guessInput" placeholder="Who's that Pokémon?" autocomplete="off" />
+            <button type="submit" class="btn btn-primary">Guess</button>
+          </form>
+
+          <div class="guess-actions">
+            <button type="button" id="guessGiveUpBtn" class="btn btn-ghost">Give up</button>
+            <button type="button" id="guessNextBtn" class="btn btn-primary" hidden>Next Pokémon &rarr;</button>
+          </div>
+
+          <p id="guessStatus" class="status-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Data from <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a> &mdash; free, public, no API key required.</p>
+    <p class="footer-credit">Built for CMU 15-113 with Claude Code. See <a href="README.md">README</a> and <a href="prompt_log.md">prompt log</a>.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
