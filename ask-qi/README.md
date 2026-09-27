@@ -50,5 +50,7 @@ Use `http://localhost:8000`, not a `file://` path: a page opened straight from d
 
 ## AI tools used
 
-Built with Claude Code (Claude Opus 5). The full prompt log for both halves lives in the
+Built with Claude Code (Claude Opus 5 and Claude Sonnet 5). This page's own prompt log — the
+frontend build, a live API-key debugging session, deployment, and the demo-video script — is in
+[PROMPT_LOG.md](PROMPT_LOG.md). The backend's implementation-focused log is in the
 [backend repo](https://github.com/Cathhh204/ask-qi-backend/blob/main/prompt_log.md).
