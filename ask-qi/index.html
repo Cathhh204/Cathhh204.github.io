@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+  Ask Qi — frontend (CMU 15-113, HW4: Backend + Frontend)
+
+  This page is the FRONTEND half of the assignment. It is a static page on GitHub Pages and holds
+  no secrets: every answer comes from my Flask backend on Render, which is the only place the
+  Gemini API key exists. Backend repo: https://github.com/Cathhh204/ask-qi-backend
+
+  AI usage: built with Claude Code (Claude Opus 5) as an AI pair-programmer. I directed the design
+  and the backend contract; the prompt log lives in the backend repo (prompt_log.md).
+-->
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Qi</title>
+  <meta name="description" content="A chatbot version of Catherine (Qi) Chen — a Flask backend on Render calls the Gemini API so the key never reaches the browser." />
+  <link rel="icon" type="image/png" href="../assets/images/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="back-link" href="../index.html#projects">&larr; Back to Portfolio</a>
+    <h1 class="brand">Ask Qi</h1>
+    <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+    </button>
+  </header>
+
+  <main class="container">
+
+    <p class="intro">
+      Ask a chatbot version of me about my projects, research, coursework, or badminton.
+      Your question goes to a Python backend I deployed on Render, which adds my persona and calls
+      the Google Gemini API — so <strong>the API key never touches this page</strong>.
+    </p>
+
+    <!-- Backend status pill: tells the visitor whether the (free-tier, sleepy) server is awake -->
+    <div class="status-row">
+      <span id="statusPill" class="status-pill status-checking">
+        <span class="status-dot"></span><span id="statusText">Checking backend…</span>
+      </span>
+      <span id="quotaNote" class="quota-note"></span>
+    </div>
+
+    <!-- Conversation -->
+    <!-- Filled by app.js: the greeting is rendered through the same addMessage() as every other
+         bubble, so the bubbles' whitespace handling stays identical. -->
+    <section id="chatLog" class="chat-log" role="log" aria-live="polite" aria-label="Conversation"></section>
+
+    <!-- Starter questions, fetched from the backend's /suggestions endpoint -->
+    <div class="suggestions" id="suggestions" aria-label="Suggested questions"></div>
+
+    <!-- Composer -->
+    <form id="chatForm" class="composer" autocomplete="off">
+      <label class="sr-only" for="messageInput">Your question</label>
+      <textarea id="messageInput" rows="1" maxlength="500"
+                placeholder="Ask me something… (Enter to send, Shift+Enter for a new line)"></textarea>
+      <div class="composer-side">
+        <span id="charCount" class="char-count">0/500</span>
+        <button type="submit" id="sendBtn" class="btn btn-primary">Send</button>
+      </div>
+    </form>
+    <p id="formError" class="form-error" role="alert"></p>
+
+    <!-- Plain-language explanation of the frontend/backend split, for anyone grading or curious -->
+    <details class="how-panel">
+      <summary>How this works (frontend &harr; backend)</summary>
+      <div class="how-body">
+        <p>
+          Two halves living at two different URLs, talking over JSON:
+        </p>
+        <ol>
+          <li>
+            <strong>This page</strong> (GitHub Pages, static HTML/CSS/JS) collects your question and
+            <code>fetch()</code>es my backend. It sends nothing but your message and the last few
+            turns of the conversation.
+          </li>
+          <li>
+            <strong>The backend</strong> (Flask on Render) validates the input, rate-limits by IP,
+            attaches the system prompt that makes the bot answer as me, and calls the Gemini API
+            with a key stored in a Render environment variable. It replies with JSON
+            <code>{ "reply": … }</code>.
+          </li>
+          <li>
+            This page renders that reply as text. Errors — bad input, rate limit, backend asleep,
+            model unreachable — come back as JSON too and are shown in the chat instead of failing
+            silently.
+          </li>
+        </ol>
+        <p class="endpoints">
+          Endpoints used: <code>GET /health</code> (wake the server on page load),
+          <code>GET /suggestions</code> (the chips above), <code>POST /chat</code> (every question).
+        </p>
+        <p>
+          Because Render's free tier sleeps after ~15 minutes idle, the very first request can take
+          around 50 seconds while the server boots. Everything after that is fast.
+        </p>
+        <p class="repo-links">
+          <a id="backendLink" href="https://github.com/Cathhh204/ask-qi-backend" target="_blank" rel="noopener">Backend code &amp; README</a>
+          ·
+          <a href="https://github.com/Cathhh204/Cathhh204.github.io/tree/main/ask-qi" target="_blank" rel="noopener">This page's code</a>
+        </p>
+      </div>
+    </details>
+
+  </main>
+
+  <footer class="footer">
+    <p>Built for CMU 15-113 with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>. Answers are AI-generated and may be wrong — email <a href="mailto:cchen7@andrew.cmu.edu">cchen7@andrew.cmu.edu</a> for anything real.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
