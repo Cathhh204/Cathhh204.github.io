@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Processing Playground</title>
+  <meta name="description" content="Upload an image and explore how computer vision algorithms transform it in real time.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page">
+
+    <header class="page-header">
+      <div class="header-text">
+        <h1>Image Processing Playground</h1>
+        <p class="subtitle">Explore how computer vision algorithms transform an image in real time.</p>
+        <p class="intro">
+          Hi, I'm Catherine (Qi) Chen, an ECE and CS student at Carnegie Mellon. I'm currently
+          taking 16-385 Computer Vision and I'm interested in computer vision and robotics, so
+          I built this playground to see the ideas I'm studying in action.
+        </p>
+        <p class="intro">
+          Upload an image, pick a processing method and adjust its parameters to see
+          how different image-processing techniques work.
+        </p>
+      </div>
+      <img class="header-art" src="{{ url_for('static', filename='scottie.svg') }}" width="240" height="200"
+           alt="A cartoon Scottish terrier. Its front half is drawn in color and its back half as white edge outlines.">
+    </header>
+
+    <!-- Upload: the whole dashed area is a <label>, so clicking it opens the file picker. -->
+    <label class="dropzone" id="dropzone" for="file-input">
+      <input type="file" id="file-input" class="visually-hidden" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+      <svg class="dropzone-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>
+      </svg>
+      <span class="dropzone-title">Drag and drop an image here, or <span class="dropzone-link">browse</span></span>
+      <span class="dropzone-hint" id="file-name">JPG or PNG, up to 10 MB</span>
+    </label>
+
+    <p class="message" id="upload-message" role="status" hidden></p>
+
+    <section class="card" aria-label="Controls">
+      <fieldset class="mode-picker">
+        <legend>Processing mode</legend>
+        <label class="mode-option"><input type="radio" name="mode" value="original" checked><span>Original</span></label>
+        <label class="mode-option"><input type="radio" name="mode" value="grayscale"><span>Grayscale</span></label>
+        <label class="mode-option"><input type="radio" name="mode" value="blur"><span>Gaussian Blur</span></label>
+        <label class="mode-option"><input type="radio" name="mode" value="edges"><span>Edge Detection</span></label>
+        <label class="mode-option"><input type="radio" name="mode" value="sharpen"><span>Sharpen</span></label>
+        <label class="mode-option"><input type="radio" name="mode" value="hough"><span>Hough Line Detection</span></label>
+      </fieldset>
+
+      <!-- Each group is shown only when its data-mode matches the selected mode. -->
+      <div class="parameters">
+        <p class="parameters-empty" id="no-parameters">This mode has no adjustable parameters.</p>
+
+        <div class="parameter-group" data-mode="blur" hidden>
+          <div class="slider">
+            <div class="slider-header">
+              <label for="sigma">Sigma</label>
+              <output id="sigma-value" for="sigma">1.5</output>
+            </div>
+            <input type="range" id="sigma" min="0.5" max="5" step="0.1" value="1.5" aria-describedby="sigma-help">
+            <div class="slider-range"><span>0.5</span><span>5.0</span></div>
+            <p class="slider-help" id="sigma-help">
+              How far the blur spreads. A higher sigma averages each pixel with more of its
+              neighbors, so the image gets smoother and fine detail disappears.
+            </p>
+          </div>
+        </div>
+
+        <div class="parameter-group" data-mode="edges" hidden>
+          <div class="slider">
+            <div class="slider-header">
+              <label for="low-threshold">Low threshold</label>
+              <output id="low-threshold-value" for="low-threshold">50</output>
+            </div>
+            <input type="range" id="low-threshold" min="0" max="255" step="1" value="50" aria-describedby="low-threshold-help">
+            <div class="slider-range"><span>0</span><span>255</span></div>
+            <p class="slider-help" id="low-threshold-help">
+              The cutoff for weak edges. Anything fainter than this is ignored. Lower it to
+              keep more faint edges (and more noise); raise it for a cleaner result.
+            </p>
+          </div>
+          <div class="slider">
+            <div class="slider-header">
+              <label for="high-threshold">High threshold</label>
+              <output id="high-threshold-value" for="high-threshold">150</output>
+            </div>
+            <input type="range" id="high-threshold" min="0" max="255" step="1" value="150" aria-describedby="high-threshold-help">
+            <div class="slider-range"><span>0</span><span>255</span></div>
+            <p class="slider-help" id="high-threshold-help">
+              The cutoff for strong edges. Anything sharper always counts as an edge.
+              Raise it to keep only the clearest boundaries; lower it to find more.
+            </p>
+          </div>
+        </div>
+
+        <div class="parameter-group" data-mode="hough" hidden>
+          <div class="slider">
+            <div class="slider-header">
+              <label for="max-lines">Maximum lines to display</label>
+              <output id="max-lines-value" for="max-lines">10</output>
+            </div>
+            <input type="range" id="max-lines" min="1" max="30" step="1" value="10" aria-describedby="max-lines-help">
+            <div class="slider-range"><span>1</span><span>30</span></div>
+            <p class="slider-help" id="max-lines-help">
+              How many detected line segments are drawn, longest first. This does not change
+              what is detected, only how many of the results you see.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="comparison" aria-label="Image comparison">
+      <article class="card">
+        <h2>Original Image</h2>
+        <div class="image-frame">
+          <p class="placeholder" id="original-placeholder">
+            <svg class="placeholder-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 16-5-5-9 9"/>
+            </svg>
+            Upload an image to get started.
+          </p>
+          <img id="original-image" alt="The image you uploaded" hidden>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Processed Image</h2>
+        <div class="image-frame" id="processed-frame">
+          <p class="placeholder" id="processed-placeholder">
+            <svg class="placeholder-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 16-5-5-9 9"/>
+            </svg>
+            The processed result will appear here.
+          </p>
+          <img id="processed-image" alt="The image after processing" hidden>
+          <div class="loading-badge" aria-hidden="true"><span class="spinner"></span>Processing</div>
+        </div>
+        <p class="message result-message" id="result-message" role="status" hidden></p>
+      </article>
+    </section>
+
+    <section class="card explanation">
+      <h2>How does this work?</h2>
+      <h3 id="explanation-title"></h3>
+      <p id="explanation-text"></p>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

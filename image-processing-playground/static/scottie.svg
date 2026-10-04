@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200">
+  <!--
+    Header illustration for the Image Processing Playground: a Scottish terrier
+    whose left half is the "original" and whose right half is what edge
+    detection would return. An original drawing, not CMU's official Scotty mark.
+
+    The dog's shapes are defined once in <defs> and drawn several times with
+    different colors, each time clipped to one half of the frame.
+  -->
+  <defs>
+    <clipPath id="frame"><rect x="8" y="8" width="224" height="184" rx="18"/></clipPath>
+    <clipPath id="left-half"><rect x="0" y="0" width="142" height="200"/></clipPath>
+    <clipPath id="right-half"><rect x="142" y="0" width="98" height="200"/></clipPath>
+
+    <!-- No colors here: each <use> below sets its own fill and stroke. -->
+    <g id="dog" stroke-linejoin="round">
+      <rect x="95" y="92" width="96" height="46" rx="20"/>     <!-- body -->
+      <rect x="58" y="58" width="56" height="44" rx="14"/>     <!-- head -->
+      <rect x="44" y="78" width="46" height="40" rx="12"/>     <!-- muzzle and beard -->
+      <polygon points="83,62 90,40 101,62"/>                   <!-- ears -->
+      <polygon points="97,62 107,42 115,64"/>
+      <polygon points="175,100 186,64 195,102"/>               <!-- tail -->
+      <rect x="103" y="124" width="15" height="36" rx="7"/>    <!-- legs -->
+      <rect x="117" y="124" width="15" height="36" rx="7"/>
+      <rect x="160" y="124" width="15" height="36" rx="7"/>
+      <rect x="174" y="124" width="15" height="36" rx="7"/>
+    </g>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <!-- Left half: the original, in color. -->
+    <g clip-path="url(#left-half)">
+      <rect width="240" height="200" fill="#e6f4f2"/>
+      <ellipse cx="120" cy="162" rx="78" ry="5" fill="#000000" opacity="0.08"/>
+      <use href="#dog" fill="#2b2d31" stroke="#2b2d31" stroke-width="3"/>
+
+      <!-- Tartan scarf -->
+      <g stroke-linecap="round" fill="none">
+        <path d="M117 88 L97 111" stroke="#c41230" stroke-width="11"/>
+        <path d="M101 109 L97 130" stroke="#c41230" stroke-width="9"/>
+        <path d="M111 90 L119 97 M103 99 L111 106" stroke="#ffffff" stroke-width="1.5" opacity="0.6"/>
+      </g>
+
+      <!-- Face -->
+      <path d="M71 68 q8 -6 17 -1" stroke="#4d5059" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <circle cx="80" cy="76" r="4" fill="#ffffff"/>
+      <circle cx="79.4" cy="76.4" r="2.6" fill="#1c1c1e"/>
+      <circle cx="78.4" cy="75.4" r="0.9" fill="#ffffff"/>
+      <circle cx="47" cy="84" r="5" fill="#000000"/>
+      <circle cx="45.4" cy="82.4" r="1.3" fill="#ffffff" opacity="0.7"/>
+    </g>
+
+    <!-- Right half: the same dog as white edges on black. A wide white copy
+         with a slightly smaller black copy on top leaves only the outline. -->
+    <g clip-path="url(#right-half)">
+      <rect width="240" height="200" fill="#1c1c1e"/>
+      <use href="#dog" fill="#ffffff" stroke="#ffffff" stroke-width="7"/>
+      <use href="#dog" fill="#1c1c1e" stroke="#1c1c1e" stroke-width="3"/>
+    </g>
+
+    <line x1="142" y1="8" x2="142" y2="192" stroke="#0f766e" stroke-width="2" stroke-dasharray="4 4"/>
+
+    <g font-family="-apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="10" letter-spacing="0.4">
+      <text x="22" y="182" fill="#5b5b60">original</text>
+      <text x="218" y="182" fill="#a3a8ab" text-anchor="end">edges</text>
+    </g>
+  </g>
+
+  <rect x="8" y="8" width="224" height="184" rx="18" fill="none" stroke="#e6e6e4" stroke-width="1.5"/>
+</svg>
