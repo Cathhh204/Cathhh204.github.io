@@ -150,6 +150,31 @@
       <p id="explanation-text"></p>
     </section>
 
+    <section class="card history" aria-labelledby="history-heading">
+      <div class="history-header">
+        <h2 id="history-heading">History</h2>
+        <button type="button" class="text-button" id="clear-history" hidden>Clear history</button>
+      </div>
+      <p class="history-note">
+        Your recent results are kept in this browser only. Nothing is stored on the server.
+      </p>
+      <p class="history-empty" id="history-empty">Nothing here yet. Process an image and it will appear here.</p>
+      <ul class="history-list" id="history-list"></ul>
+    </section>
+
+    <!-- Blueprint for one history card. script.js copies it and fills in the blanks. -->
+    <template id="history-card-template">
+      <li class="history-card">
+        <div class="history-images">
+          <img class="history-original" alt="">
+          <img class="history-processed" alt="">
+        </div>
+        <p class="history-title"></p>
+        <p class="history-settings"></p>
+        <p class="history-details"></p>
+      </li>
+    </template>
+
   </main>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>

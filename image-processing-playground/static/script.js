@@ -10,6 +10,10 @@ const MAX_FILE_BYTES = 10 * 1024 * 1024; // keep in sync with MAX_UPLOAD_MEGABYT
 const ALLOWED_FILE_PATTERN = /\.(jpe?g|png)$/i;
 const SLIDER_DEBOUNCE_MS = 250;
 
+const HISTORY_STORAGE_KEY = "image-playground-history-v1";
+const MAX_HISTORY_ENTRIES = 12;
+const THUMBNAIL_MAX_SIDE = 320; // pixels
+
 const EXPLANATIONS = {
   original: {
     title: "Original",
@@ -61,8 +65,15 @@ const processedFrame = document.getElementById("processed-frame");
 const explanationTitle = document.getElementById("explanation-title");
 const explanationText = document.getElementById("explanation-text");
 
-let currentFile = null;   // the uploaded File, re-sent with every request
-let latestRequestId = 0;  // lets us ignore replies that arrive out of order
+const historyList = document.getElementById("history-list");
+const historyEmptyNote = document.getElementById("history-empty");
+const clearHistoryButton = document.getElementById("clear-history");
+const historyCardTemplate = document.getElementById("history-card-template");
+
+let currentFile = null;       // the uploaded File, re-sent with every request
+let currentThumbnail = null;  // Promise for a small copy of the upload, shown in the history
+let latestRequestId = 0;      // lets us ignore replies that arrive out of order
+let historyEntries = loadHistory();
 
 
 /* ---------- Small helpers ---------- */
@@ -157,6 +168,7 @@ function clearProcessedImage() {
 // Go back to the "nothing uploaded yet" state.
 function resetToEmptyState() {
   currentFile = null;
+  currentThumbnail = null;
   latestRequestId++; // any reply still on its way is now out of date
   setLoading(false);
   URL.revokeObjectURL(originalImage.src);
@@ -186,7 +198,135 @@ function handleFile(file) {
   currentFile = file;
   fileNameLabel.textContent = `Selected: ${file.name}`;
   showOriginalPreview(file);
+  // Start shrinking the upload now, so its thumbnail is ready by the time the
+  // first result arrives. If the file turns out to be unreadable this becomes null.
+  currentThumbnail = makeThumbnail(originalImage.src).catch(() => null);
   processImage();
+}
+
+
+/* ---------- History ---------- */
+
+// The history lives in this browser's localStorage and never reaches the
+// server. Only small thumbnails are kept, because localStorage can hold just
+// a few megabytes.
+
+function loadHistory() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return []; // storage is blocked, or what was saved is not valid JSON
+  }
+}
+
+function saveHistory() {
+  try {
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyEntries));
+  } catch {
+    // Storage is full or blocked. The history still works until the page closes.
+  }
+}
+
+// Loads an image from a URL and resolves with the <img> once it is ready.
+// This uses the load event rather than image.decode(), because decode() waits
+// for the page to render a frame and so never finishes in a background tab.
+function loadImage(imageUrl) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = imageUrl;
+  });
+}
+
+// Shrinks an image by drawing it onto a small canvas. Returns the result as a
+// JPEG data URL, which is a string and can therefore be saved in localStorage.
+async function makeThumbnail(imageUrl) {
+  const image = await loadImage(imageUrl);
+
+  const scale = Math.min(1, THUMBNAIL_MAX_SIDE / Math.max(image.width, image.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(image.width * scale));
+  canvas.height = Math.max(1, Math.round(image.height * scale));
+
+  const context = canvas.getContext("2d");
+  context.fillStyle = "#ffffff"; // JPEG has no transparency; see-through areas would turn black
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL("image/jpeg", 0.8);
+}
+
+// The current slider values as short text, for example "Low 50, High 150".
+function describeSettings(mode) {
+  if (mode === "blur") return `Sigma ${Number(sigmaSlider.value).toFixed(1)}`;
+  if (mode === "edges") return `Low ${lowSlider.value}, High ${highSlider.value}`;
+  if (mode === "hough") return `Up to ${maxLinesSlider.value} lines`;
+  return "";
+}
+
+async function addToHistory(request, processedImageUrl) {
+  if (request.mode === "original") return; // nothing was changed, so nothing to remember
+
+  const originalThumbnail = await request.originalThumbnail;
+  const processedThumbnail = await makeThumbnail(processedImageUrl).catch(() => null);
+  // The history is a nice-to-have: if a thumbnail could not be made, skip the entry.
+  if (!originalThumbnail || !processedThumbnail) return;
+
+  // Making thumbnails takes a moment. If a newer request went out meanwhile,
+  // its own result will be recorded instead, so this one is out of date.
+  if (request.id !== latestRequestId) return;
+
+  const entry = {
+    fileName: request.fileName,
+    mode: request.mode,
+    title: EXPLANATIONS[request.mode].title,
+    settings: request.settings,
+    savedAt: Date.now(),
+    originalThumbnail,
+    processedThumbnail,
+  };
+
+  // Keep one entry per image and mode, so trying new slider values replaces
+  // the old entry instead of filling the history with near-duplicates. Two
+  // entries come from the same image when their original thumbnails match.
+  historyEntries = historyEntries.filter(
+    (old) => old.originalThumbnail !== originalThumbnail || old.mode !== entry.mode
+  );
+  historyEntries.unshift(entry); // newest first
+  historyEntries = historyEntries.slice(0, MAX_HISTORY_ENTRIES);
+
+  saveHistory();
+  renderHistory();
+}
+
+function createHistoryCard(entry) {
+  const card = historyCardTemplate.content.cloneNode(true);
+
+  const original = card.querySelector(".history-original");
+  original.src = entry.originalThumbnail;
+  original.alt = `Original: ${entry.fileName}`;
+
+  const processed = card.querySelector(".history-processed");
+  processed.src = entry.processedThumbnail;
+  processed.alt = `Result: ${entry.title}`;
+
+  const savedAt = new Date(entry.savedAt).toLocaleString([], {
+    month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+  });
+
+  // textContent rather than innerHTML, so a file name is never treated as HTML.
+  card.querySelector(".history-title").textContent = entry.title;
+  card.querySelector(".history-settings").textContent = entry.settings;
+  card.querySelector(".history-settings").hidden = !entry.settings;
+  card.querySelector(".history-details").textContent = `${entry.fileName} · ${savedAt}`;
+  return card;
+}
+
+function renderHistory() {
+  historyList.replaceChildren(...historyEntries.map(createHistoryCard));
+  historyEmptyNote.hidden = historyEntries.length > 0;
+  clearHistoryButton.hidden = historyEntries.length === 0;
 }
 
 
@@ -234,7 +374,16 @@ async function processImage() {
     return;
   }
 
-  const requestId = ++latestRequestId;
+  // Write down what this request is for. By the time the reply arrives the
+  // user may have moved a slider again, and the history needs the settings
+  // that actually produced the image.
+  const request = {
+    id: ++latestRequestId,
+    fileName: currentFile.name,
+    originalThumbnail: currentThumbnail,
+    mode: getSelectedMode(),
+    settings: describeSettings(getSelectedMode()),
+  };
   setLoading(true);
 
   let result;
@@ -246,7 +395,7 @@ async function processImage() {
 
   // Requests can overlap. If a newer one was sent while this one was in
   // flight, this reply is stale and showing it would undo the newer settings.
-  if (requestId !== latestRequestId) return;
+  if (request.id !== latestRequestId) return;
 
   setLoading(false);
   if (result.error) {
@@ -255,6 +404,7 @@ async function processImage() {
   } else {
     showProcessedImage(result.image);
     showMessage(resultMessage, result.message);
+    addToHistory(request, result.image);
   }
 }
 
@@ -310,7 +460,14 @@ for (const slider of sliders) {
   });
 }
 
+clearHistoryButton.addEventListener("click", () => {
+  historyEntries = [];
+  saveHistory();
+  renderHistory();
+});
+
 // Some browsers restore radio buttons and sliders after a reload, so set the
 // labels and visible controls from the actual values rather than assuming.
 updateModeUI();
 updateSliderLabels();
+renderHistory();
