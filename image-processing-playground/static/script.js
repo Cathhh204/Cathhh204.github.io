@@ -33,11 +33,11 @@ const EXPLANATIONS = {
   },
   sharpen: {
     title: "Sharpen",
-    text: "A small 3x3 grid of weights, called a convolution kernel, slides over the image. This kernel multiplies the center pixel by 5 and subtracts its four neighbors. In a flat area nothing changes, because the weights add up to 1. Wherever a pixel differs from its neighbors, that local difference is emphasized, so edges and fine details look crisper.",
+    text: "A small 3x3 grid of weights, called a convolution kernel, slides over the image. This kernel multiplies the center pixel by 3 and subtracts half of each of its four neighbors, giving a gentler sharpening effect. In a flat area nothing changes, because the weights add up to 1. Wherever a pixel differs from its neighbors, that local difference is emphasized, so edges and fine details look crisper.",
   },
   hough: {
     title: "Hough Line Detection",
-    text: "First, Canny edge detection reduces the image to its edge pixels. Then every edge pixel votes for all of the lines that could pass through it. A line that collects many votes is one that many edge pixels agree on, in other words a group of edge pixels that could belong to the same straight line. The longest detected segments are drawn in red on top of the original image.",
+    text: "First, Canny edge detection reduces the image to its edge pixels. Then every edge pixel votes for all of the lines that could pass through it. A line that collects many votes is one that many edge pixels agree on, in other words a group of edge pixels that could belong to the same straight line. The longest detected segments are drawn in cyan on top of the original image.",
   },
 };
 

@@ -27,20 +27,20 @@ MAX_IMAGE_DIMENSION = 1400  # longest side in pixels; bigger images are shrunk
 # Flask rejects bigger uploads with a 413 error before our route even runs.
 app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_MEGABYTES * 1024 * 1024
 
-# The center pixel is multiplied by 5 and its four neighbors are subtracted.
-# The weights add up to 1, so a flat area keeps its brightness, but a pixel
-# that differs from its neighbors gets pushed even further away from them.
+# The center pixel is multiplied by 3; half of each neighbor is subtracted.
+# The weights add up to 1, so flat areas keep their brightness. These gentler
+# weights enhance edges with less noise amplification than the original kernel.
 SHARPEN_KERNEL = np.array(
-    [[0, -1, 0],
-     [-1, 5, -1],
-     [0, -1, 0]],
+    [[0, -0.5, 0],
+     [-0.5, 3, -0.5],
+     [0, -0.5, 0]],
     dtype=np.float32,
 )
 
 # Canny thresholds used to find edges before running the Hough transform.
 HOUGH_CANNY_LOW = 50
 HOUGH_CANNY_HIGH = 150
-LINE_COLOR = (0, 0, 255)  # red, because OpenCV stores colors as BGR, not RGB
+LINE_COLOR = (255, 255, 0)  # cyan; OpenCV stores colors as BGR, not RGB
 
 
 # ---------- Reading and validating the request ----------
